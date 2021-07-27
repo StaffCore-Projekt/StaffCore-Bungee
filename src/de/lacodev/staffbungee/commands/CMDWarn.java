@@ -2,6 +2,7 @@ package de.lacodev.staffbungee.commands;
 
 import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.managers.WarnManager;
+import de.lacodev.staffbungee.utils.StringGenerator;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -38,7 +39,7 @@ public class CMDWarn extends Command {
 									reason += args[i] + " ";
 								}
 								
-								WarnManager.warn(target.getUniqueId().toString(), player.getUniqueId().toString(), reason);
+								WarnManager.warn(target.getUniqueId().toString(), player.getUniqueId().toString(), StringGenerator.getMySQLFriendly(reason));
 								player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Created")));
 								
 							} else {	

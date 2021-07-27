@@ -24,25 +24,40 @@ public class IPLookup {
 	}
 	
 	public static String getCountry(String ip) {
-		if(iplog.get(ip).get("status").getAsString().matches("success")) {
-			return iplog.get(ip).get("country").getAsString();
-		} else {
+		try {
+			if(iplog.get(ip).get("status").getAsString().matches("success")) {
+				return iplog.get(ip).get("country").getAsString();
+			} else {
+				return "Request failed";
+			}
+		} catch (NullPointerException e) {
+			System.err.println("StaffCore » Region Detection failed");
 			return "Request failed";
 		}
 	}
 	
 	public static String getRegion(String ip) {
-		if(iplog.get(ip).get("status").getAsString().matches("success")) {
-			return iplog.get(ip).get("regionName").getAsString();
-		} else {
+		try {
+			if(iplog.get(ip).get("status").getAsString().matches("success")) {
+				return iplog.get(ip).get("regionName").getAsString();
+			} else {
+				return "Request failed";
+			}
+		} catch (NullPointerException e) {
+			System.err.println("StaffCore » Region Detection failed");
 			return "Request failed";
 		}
 	}
 	
 	public static boolean isUsingProxy(String ip) {
-		if(iplog.get(ip).get("status").getAsString().matches("success")) {
-			return iplog.get(ip).get("proxy").getAsBoolean();
-		} else {
+		try {
+			if(iplog.get(ip).get("status").getAsString().matches("success")) {
+				return iplog.get(ip).get("proxy").getAsBoolean();
+			} else {
+				return false;
+			}
+		} catch (NullPointerException e) {
+			System.err.println("StaffCore » VPN Detection failed");
 			return false;
 		}
 	}

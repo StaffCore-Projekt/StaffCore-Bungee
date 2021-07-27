@@ -11,6 +11,7 @@ import com.google.gson.JsonParser;
 
 import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.enums.Settings;
+import de.lacodev.staffbungee.handlers.ViolationLevelHandler;
 import de.lacodev.staffbungee.managers.BanManager;
 import de.lacodev.staffbungee.managers.BlackListManager;
 import de.lacodev.staffbungee.managers.PlayerManager;
@@ -105,6 +106,8 @@ public class ListenerLogin implements Listener {
 			IPLookup.logIp(ip.substring(1, ip.length() - 6));
 			
 			PlayerManager.createPlayerData(player);
+			
+			ViolationLevelHandler.reset(player.getUniqueId().toString());
 			
 			Main.getSessionsHandler().startSession(player.getUniqueId().toString());
 			

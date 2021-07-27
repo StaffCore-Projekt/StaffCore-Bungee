@@ -48,6 +48,7 @@ public class VersionDetector {
 		versions.put(753, "1.16.3");
 		versions.put(754, "1.16.4 - 1.16.5");
 		versions.put(755, "1.17");
+		versions.put(756, "1.17.1");
 	}
 	
 }

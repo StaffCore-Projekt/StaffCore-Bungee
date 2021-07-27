@@ -214,6 +214,22 @@ public class CMDBan extends Command {
 							
 						}
 						
+					} else {
+						player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Usage") + " -s"));
+						
+						ArrayList<Reason> reasons = ReasonManager.getReasons(ReasonType.BAN);
+						
+						if(!reasons.isEmpty()) {
+							
+							player.sendMessage(new TextComponent(""));
+							for(Reason reason : reasons) {
+								player.sendMessage(new TextComponent("§8- §c" + reason.getType().toString() + " §8| §7#"+ reason.getId() +" §e" + reason.getName() + " §8| " + ReasonLengthCalculator.calculate(reason.getLength())));
+							}
+							player.sendMessage(new TextComponent(""));
+							
+						} else {
+							player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.BanManager.List-Reasons.No-Reasons-Found")));
+						}
 					}
 					
 				} else {

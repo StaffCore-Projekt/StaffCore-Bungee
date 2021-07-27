@@ -35,6 +35,7 @@ public class PlayerManager {
 												+ "'"+ IPLookup.getCountry(ip.substring(1, ip.length() - 6)) +"','"+ IPLookup.getRegion(ip.substring(1, ip.length() - 6)) +"','1')");
 						
 						Main.getMySQL().update("INSERT INTO StaffCore_violationleveldb(UUID,VL) VALUES ('"+ player.getUniqueId().toString() +"','0')");
+						Main.getMySQL().update("INSERT INTO StaffCore_violationresetdb(UUID,NEXT_RESET) VALUES ('"+ player.getUniqueId().toString() +"','0')");
 						
 					} else {
 						updatePlayerData(player);
@@ -56,6 +57,9 @@ public class PlayerManager {
 		
 		if(!ViolationLevelHandler.hasVL(player.getUniqueId().toString())) {
 			Main.getMySQL().update("INSERT INTO StaffCore_violationleveldb(UUID,VL) VALUES ('"+ player.getUniqueId().toString() +"','0')");
+		}
+		if(!ViolationLevelHandler.hasLastReset(player.getUniqueId().toString())) {
+			Main.getMySQL().update("INSERT INTO StaffCore_violationresetdb(UUID,NEXT_RESET) VALUES ('"+ player.getUniqueId().toString() +"','0')");
 		}
 		
 	}

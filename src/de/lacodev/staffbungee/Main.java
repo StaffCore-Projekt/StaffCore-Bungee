@@ -262,6 +262,7 @@ public class Main extends Plugin {
 		    
 		    // Violationlevel System
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_violationleveldb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), VL INT(6))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_violationresetdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), NEXT_RESET LONG)");
 		    
 		    // Blacklist System
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_blacklistdb(id INT(6) AUTO_INCREMENT UNIQUE, USERNAME VARCHAR(255), ADDED_AT LONG, ADDED_BY VARCHAR(255))");
@@ -497,6 +498,15 @@ public class Main extends Plugin {
 				configcfg.set("General.Language", "us");
 				configcfg.set("General.Time-Format", "yyyy.MM.dd, HH:mm");
 				configcfg.set("ViolationLevelSystem.Enable", false);
+				configcfg.set("ViolationLevelSystem.Adding-Points.CONFIRMED_REPORT", 3);
+				configcfg.set("ViolationLevelSystem.Adding-Points.WARN", 5);
+				configcfg.set("ViolationLevelSystem.Adding-Points.KICK", 7);
+				configcfg.set("ViolationLevelSystem.Adding-Points.MUTE", 14);
+				configcfg.set("ViolationLevelSystem.Adding-Points.BAN", 21);
+				configcfg.set("ViolationLevelSystem.Adding-Points.SILENT_MUTE", 28);
+				configcfg.set("ViolationLevelSystem.Adding-Points.SILENT_BAN", 35);
+				configcfg.set("ViolationLevelSystem.Adding-Points.IP_BAN", 60);
+				configcfg.set("ViolationLevelSystem.Remove-Points.Daily", 2);
 				configcfg.set("VPN-Detection.Allow-VPN-Join", true);
 				configcfg.set("Per-Reason-Permission.Enable", false);
 				configcfg.set("Per-Reason-Permission.Prefix", "staffcore.reason.");
@@ -532,11 +542,11 @@ public class Main extends Plugin {
 				
 				Configuration mysqlcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(mysql);
 				
-				mysqlcfg.set("MySQL.HOST", "&host");
+				mysqlcfg.set("MySQL.HOST", "host");
 				mysqlcfg.set("MySQL.PORT", "3306");
-				mysqlcfg.set("MySQL.DATABASE", "&database");
-				mysqlcfg.set("MySQL.USERNAME", "&username");
-				mysqlcfg.set("MySQL.PASSWORD", "&password");
+				mysqlcfg.set("MySQL.DATABASE", "database");
+				mysqlcfg.set("MySQL.USERNAME", "username");
+				mysqlcfg.set("MySQL.PASSWORD", "password");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(mysqlcfg, mysql);
 			} catch(IOException e) {
@@ -545,7 +555,7 @@ public class Main extends Plugin {
 		}
 		
 		Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-		Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» Fetching... (§eTranslations from translate.lacodev.de§8)"));
+		Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» Fetching... (§eTranslations from LacoDev Services§8)"));
 		Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		
 		translator.init();

@@ -34,7 +34,7 @@ public class TranslationHandler {
 		fallback.clear();
 		
 		try {
-			JsonObject message_keys = readJsonFromUrl("https://translate.lacodev.de/api/v1/keys").getAsJsonObject();
+			JsonObject message_keys = readJsonFromUrl("https://www.lacodev.de/services/api/v1/keys").getAsJsonObject();
 			int totalKeys = message_keys.size();
 			
 			for(int i = 1; i <= totalKeys; i++) {
@@ -44,7 +44,7 @@ public class TranslationHandler {
 				keys.add(data.get("key").getAsString());
 			}
 			
-			JsonObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/all/lang/us").getAsJsonObject();
+			JsonObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/all/lang/us").getAsJsonObject();
 			
 			for(String key : keys) {
 				
@@ -73,7 +73,7 @@ public class TranslationHandler {
 		language.clear();
 		
 		try {
-			JsonObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/all/lang/"+ lang).getAsJsonObject();
+			JsonObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/all/lang/"+ lang).getAsJsonObject();
 			
 			for(String key : keys) {
 				
@@ -100,7 +100,7 @@ public class TranslationHandler {
 		custom.clear();
 		
 		try {
-			JsonObject translation = readJsonFromUrl("https://translate.lacodev.de/api/v1/restricted/key/"+ restapikey).getAsJsonObject();
+			JsonObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/restricted/key/"+ restapikey).getAsJsonObject();
 			
 			for(String key : keys) {
 				
@@ -120,6 +120,7 @@ public class TranslationHandler {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §7Translator denied your request!"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cServices might be in maintenance! Or you entered the wrong API-Key"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cTry adding messages ;) If you have, please contact our support!"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		}
 		
@@ -145,7 +146,7 @@ public class TranslationHandler {
 			jsonElement = (JsonObject) parser.parse(new InputStreamReader(new URL(url).openStream(), Charset.forName("UTF-8")));
 			return jsonElement;
 		} catch (JsonIOException | JsonSyntaxException | IOException e) {
-			e.printStackTrace();
+			
 		}
 		return null;
 	}

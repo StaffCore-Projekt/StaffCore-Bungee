@@ -29,6 +29,8 @@ public class MuteManager {
 						return true;
 					} else if(rs.getLong("MUTE_END") > System.currentTimeMillis()) {
 						return true;
+					} else {
+						unmute(uuid, "Console", "Unmute");
 					}
 				}
 			} catch(SQLException e) {

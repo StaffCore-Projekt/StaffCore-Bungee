@@ -4,6 +4,7 @@ import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.enums.Violation;
 import de.lacodev.staffbungee.handlers.ViolationLevelHandler;
 import de.lacodev.staffbungee.managers.NotificationManager;
+import de.lacodev.staffbungee.utils.StringGenerator;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -44,7 +45,7 @@ public class CMDKick extends Command {
 		            	target.disconnect(new TextComponent(Main.getMSG("Messages.System.Kick.Screen").replace("%reason%", reason)));
 		            	
 		            	Main.getMySQL().update("INSERT INTO StaffCore_punishmentsdb(TYPE,UUID,TEAM_UUID,REASON,BAN_START,SUB_SERVER) VALUES "
-		            			+ "('KICK','"+ target.getUniqueId().toString() +"','"+ player.getUniqueId().toString() +"','"+ reason +"','"+ System.currentTimeMillis() +"','"+ target.getServer().getInfo().getName() +"')");
+		            			+ "('KICK','"+ target.getUniqueId().toString() +"','"+ player.getUniqueId().toString() +"','"+ StringGenerator.getMySQLFriendly(reason) +"','"+ System.currentTimeMillis() +"','"+ target.getServer().getInfo().getName() +"')");
 		            	
 		            	NotificationManager.sendKickNotify(target.getUniqueId().toString(), player.getUniqueId().toString(), reason);
 		            	
@@ -79,7 +80,7 @@ public class CMDKick extends Command {
 	            	target.disconnect(new TextComponent(Main.getMSG("Messages.System.Kick.Screen").replace("%reason%", reason)));
 	            	
 	            	Main.getMySQL().update("INSERT INTO StaffCore_punishmentsdb(TYPE,UUID,TEAM_UUID,REASON,BAN_START) VALUES "
-	            			+ "('KICK','"+ target.getUniqueId().toString() +"','Console','"+ reason +"','"+ System.currentTimeMillis() +"')");
+	            			+ "('KICK','"+ target.getUniqueId().toString() +"','Console','"+ StringGenerator.getMySQLFriendly(reason) +"','"+ System.currentTimeMillis() +"')");
 	            	
 	            	NotificationManager.sendKickNotify(target.getUniqueId().toString(), "Console", reason);
 	            	

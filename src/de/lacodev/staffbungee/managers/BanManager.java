@@ -29,6 +29,8 @@ public class BanManager {
 						return true;
 					} else if(rs.getLong("BAN_END") > System.currentTimeMillis()) {
 						return true;
+					} else {
+						unban(uuid, "Console", "Unban");
 					}
 				}
 			} catch(SQLException e) {

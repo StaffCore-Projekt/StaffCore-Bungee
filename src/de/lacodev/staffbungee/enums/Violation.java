@@ -1,17 +1,13 @@
 package de.lacodev.staffbungee.enums;
 
+import de.lacodev.staffbungee.Main;
+
 public enum Violation {
 	
-	CONFIRMED_REPORT(3),WARN(5),KICK(7),MUTE(14),BAN(21),SILENT_MUTE(28),SILENT_BAN(35),IP_BAN(60);
-	
-	int vl;
-	
-	private Violation(int vl) {
-		this.vl = vl;
-	}
+	CONFIRMED_REPORT,WARN,KICK,MUTE,BAN,SILENT_MUTE,SILENT_BAN,IP_BAN;
 
-	public int getVL() {
-		return vl;
+	public int getVL(Violation vl) {
+		return Main.getInstance().getConfig().getInt("ViolationLevelSystem.Adding-Points." + vl.toString());
 	}
 	
 }
