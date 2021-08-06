@@ -393,16 +393,18 @@ public class NotificationManager {
 						if(all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || all.hasPermission(Main.getPermissionNotice("Permissions.UnBan.Notify"))) {
 							all.sendMessage(new TextComponent(""));
 							all.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban").replace("%target%", targetname).replace("%player%", "Console")));
+							all.sendMessage(new TextComponent(Main.getPrefix() + "§e" + reason));
 							all.sendMessage(new TextComponent(""));
 						}
 					}
 					String notify11 = Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban").replace("%target%", targetname).replace("%player%", "Console");
 					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(notify11));
+					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(Main.getPrefix() + reason));
 					
 					if(Main.getInstance().getDiscord().getBoolean("Discord-Integration.Events.Network-Unban.Enable")) {
 						
 						try {
-							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unban.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNBAN, ChatColor.stripColor(notify11.replace("»", ">")), PlayerManager.getUUIDByName(targetname));
+							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unban.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNBAN, ChatColor.stripColor(notify11.replace("»", ">") + "\nReason > " + reason), PlayerManager.getUUIDByName(targetname));
 						} catch (Exception e) {
 							
 						}
@@ -414,16 +416,18 @@ public class NotificationManager {
 						if(all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || all.hasPermission(Main.getPermissionNotice("Permissions.UnMute.Notify"))) {
 							all.sendMessage(new TextComponent(""));
 							all.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute-System.UnMute.Notify.Team.Unmute").replace("%target%", targetname).replace("%player%", "Console")));
+							all.sendMessage(new TextComponent(Main.getPrefix() + "§e" + reason));
 							all.sendMessage(new TextComponent(""));
 						}
 					}
 					String notify111 = Main.getPrefix() + Main.getMSG("Messages.Mute-System.UnMute.Notify.Team.Unmute").replace("%target%", targetname).replace("%player%", "Console");
 					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(notify111));
+					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(Main.getPrefix() + reason));
 					
 					if(Main.getInstance().getDiscord().getBoolean("Discord-Integration.Events.Network-Unmute.Enable")) {
 						
 						try {
-							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unmute.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNMUTE, ChatColor.stripColor(notify111.replace("»", ">")), PlayerManager.getUUIDByName(targetname));
+							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unmute.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNMUTE, ChatColor.stripColor(notify111.replace("»", ">") + "\nReason > " + reason), PlayerManager.getUUIDByName(targetname));
 						} catch (Exception e) {
 							
 						}
@@ -510,16 +514,18 @@ public class NotificationManager {
 						if(all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || all.hasPermission(Main.getPermissionNotice("Permissions.UnBan.Notify"))) {
 							all.sendMessage(new TextComponent(""));
 							all.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban").replace("%target%", targetname).replace("%player%", username)));
+							all.sendMessage(new TextComponent(Main.getPrefix() + "§e" + reason));
 							all.sendMessage(new TextComponent(""));
 						}
 					}
 					String notify11 = Main.getPrefix() + Main.getMSG("Messages.Ban-System.UnBan.Notify.Team.Unban").replace("%target%", targetname).replace("%player%", username);
 					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(notify11));
+					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(Main.getPrefix() + reason));
 					
 					if(Main.getInstance().getDiscord().getBoolean("Discord-Integration.Events.Network-Unban.Enable")) {
 						
 						try {
-							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unban.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNBAN, ChatColor.stripColor(notify11.replace("»", ">")), PlayerManager.getUUIDByName(targetname));
+							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unban.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNBAN, ChatColor.stripColor(notify11.replace("»", ">") + "\nReason > " + reason), PlayerManager.getUUIDByName(targetname));
 						} catch (Exception e) {
 							
 						}
@@ -531,16 +537,18 @@ public class NotificationManager {
 						if(all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || all.hasPermission(Main.getPermissionNotice("Permissions.UnMute.Notify"))) {
 							all.sendMessage(new TextComponent(""));
 							all.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute-System.UnMute.Notify.Team.Unmute").replace("%target%", targetname).replace("%player%", username)));
+							all.sendMessage(new TextComponent(Main.getPrefix() + "§e" + reason));
 							all.sendMessage(new TextComponent(""));
 						}
 					}
 					String notify111 = Main.getPrefix() + Main.getMSG("Messages.Mute-System.UnMute.Notify.Team.Unmute").replace("%target%", targetname).replace("%player%", username);
 					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(notify111));
+					Main.getInstance().getProxy().getLogger().info(ChatColor.stripColor(Main.getPrefix() + reason));
 					
 					if(Main.getInstance().getDiscord().getBoolean("Discord-Integration.Events.Network-Unmute.Enable")) {
 						
 						try {
-							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unmute.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNMUTE, ChatColor.stripColor(notify111.replace("»", ">")), PlayerManager.getUUIDByName(targetname));
+							new DiscordIntegrationHandler(Main.getInstance().getDiscord().getString("Discord-Integration.Events.Network-Unmute.WebHook-URL")).sendMessageToWebHook(DiscordType.NETWORK_UNMUTE, ChatColor.stripColor(notify111.replace("»", ">") + "\nReason > " + reason), PlayerManager.getUUIDByName(targetname));
 						} catch (Exception e) {
 							
 						}

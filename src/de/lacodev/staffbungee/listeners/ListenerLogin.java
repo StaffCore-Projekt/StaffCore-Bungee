@@ -152,8 +152,10 @@ public class ListenerLogin implements Listener {
 			}
 		}
 		
-		if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.TeamChat.AutoLogin"))) {
+		if(player.hasPermission(Main.getPermissionNotice("Permissions.TeamChat.AutoLogin"))) {
 			Main.getTeamChat().login(player);
+		} else if(player.hasPermission(Main.getPermissionNotice("Permissions.TeamChat.Ghost-AutoLogin"))) {
+			Main.getTeamChat().ghostLogin(player);
 		}
 	}
 	
@@ -249,6 +251,12 @@ public class ListenerLogin implements Listener {
 		    		  } else {
 		    			  brands.put(player, "StaffCore");
 		    		  }
+	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
+	    			  if(brands.containsKey(player)) {
+		    			  brands.replace(player, "TecknixClient");
+		    		  } else {
+		    			  brands.put(player, "TecknixClient");
+		    		  }
 	    		  }
 	    	  } else if(e.getTag().contains("minecraft:brand")) {
 	    		  if(translateString(new String(e.getData(), "UTF-8")).contains("lunarclient")) {
@@ -274,6 +282,12 @@ public class ListenerLogin implements Listener {
 		    			  brands.replace(player, "StaffCore");
 		    		  } else {
 		    			  brands.put(player, "StaffCore");
+		    		  }
+	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
+	    			  if(brands.containsKey(player)) {
+		    			  brands.replace(player, "TecknixClient");
+		    		  } else {
+		    			  brands.put(player, "TecknixClient");
 		    		  }
 	    		  }
 	    	  }

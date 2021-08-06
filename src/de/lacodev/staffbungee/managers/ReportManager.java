@@ -9,6 +9,8 @@ import java.util.UUID;
 import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.enums.ReportStatus;
 import de.lacodev.staffbungee.enums.ReportType;
+import de.lacodev.staffbungee.enums.Violation;
+import de.lacodev.staffbungee.handlers.ViolationLevelHandler;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -132,6 +134,10 @@ public class ReportManager {
 			public void run() {
 				
 				if(Main.getMySQL().isConnected()) {
+					
+					if(Main.getInstance().getConfig().getBoolean("ViolationLevelSystem.Enable")) {
+						ViolationLevelHandler.addVL(claimed.get(teamuuid), Violation.CONFIRMED_REPORT);
+					}
 					
 					Main.getMySQL().update("UPDATE StaffCore_reportsdb SET STATUS = '"+ ReportStatus.CONFIRMED.getStatus() +"',"
 							+ "UPDATED_AT = '"+ System.currentTimeMillis() +"' WHERE UUID = '"+ claimed.get(teamuuid) +"'");

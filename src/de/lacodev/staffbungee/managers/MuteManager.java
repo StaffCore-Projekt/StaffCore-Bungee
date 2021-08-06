@@ -412,7 +412,7 @@ public class MuteManager {
 						
 						Main.getMySQL().update("DELETE FROM StaffCore_mutesdb WHERE MUTED_UUID = '"+ targetuuid +"'");
 						
-						NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "UNMUTE", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), null);
+						NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "UNMUTE", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), reason);
 						
 					} else {
 						team.sendMessage(new TextComponent(""));
@@ -438,7 +438,7 @@ public class MuteManager {
 						
 						Main.getMySQL().update("DELETE FROM StaffCore_mutesdb WHERE MUTED_UUID = '"+ targetuuid +"'");
 						
-						NotificationManager.sendNotify(NotificationSender.CONSOLE_NOTIFY, "UNMUTE", PlayerManager.getUsernamebyUUID(targetuuid), null);
+						NotificationManager.sendNotify(NotificationSender.CONSOLE_NOTIFY, "UNMUTE", PlayerManager.getUsernamebyUUID(targetuuid), reason);
 						
 					} else {
 						BungeeCord.getInstance().getConsole().sendMessage(new TextComponent(""));

@@ -357,6 +357,7 @@ public class Main extends Plugin {
 				configcfg.set("Permissions.TeamChat.Ghost", "staffcore.teamchat.ghost");
 				configcfg.set("Permissions.TeamChat.List", "staffcore.teamchat.list");
 				configcfg.set("Permissions.TeamChat.AutoLogin", "staffcore.teamchat.autologin");
+				configcfg.set("Permissions.TeamChat.Ghost-AutoLogin", "staffcore.teamchat.ghost.autologin");
 				configcfg.set("Permissions.LabyMod.Info", "staffcore.labymod.info");
 				configcfg.set("Permissions.Punishment.Check", "staffcore.punishment.check");
 				configcfg.set("Permissions.Blacklist.Change", "staffcore.blacklist.change");

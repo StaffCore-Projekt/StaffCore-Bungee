@@ -70,12 +70,18 @@ public class CMDBanManager extends Command {
 					} else {
 						player.sendMessage(new TextComponent(""));
 						player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cBanManager§8]"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager removereason <ReasonID>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager listreasons"));
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.addreason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager removereason <ReasonID>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.listreasons"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager listreasons"));
+						}
 						player.sendMessage(new TextComponent(""));
 					}
 				} else if(args.length == 2) {
@@ -107,12 +113,18 @@ public class CMDBanManager extends Command {
 					} else {
 						player.sendMessage(new TextComponent(""));
 						player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cBanManager§8]"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager removereason <ReasonID>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager listreasons"));
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.addreason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager removereason <ReasonID>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.listreasons"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager listreasons"));
+						}
 						player.sendMessage(new TextComponent(""));
 					}
 					
@@ -143,24 +155,36 @@ public class CMDBanManager extends Command {
 					} else {
 						player.sendMessage(new TextComponent(""));
 						player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cBanManager§8]"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager removereason <ReasonID>"));
-						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-								"/banmanager listreasons"));
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.addreason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager removereason <ReasonID>"));
+						}
+						if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.listreasons"))) {
+							player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+									"/banmanager listreasons"));
+						}
 						player.sendMessage(new TextComponent(""));
 					}
 					
 				} else {
 					player.sendMessage(new TextComponent(""));
 					player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cBanManager§8]"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/banmanager removereason <ReasonID>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/banmanager listreasons"));
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.addreason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/banmanager addreason <Ban/Mute> <Length: 30d / §7Perma> <Reason>"));
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.removereason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/banmanager removereason <ReasonID>"));
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.BanManager.listreasons"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/banmanager listreasons"));
+					}
 					player.sendMessage(new TextComponent(""));
 				}
 				

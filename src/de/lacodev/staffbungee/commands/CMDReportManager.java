@@ -31,12 +31,18 @@ public class CMDReportManager extends Command {
 					
 					player.sendMessage(new TextComponent(""));
 					player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cReportManager§8]"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager addreason <Reason>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager removereason <ReasonID>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager listreasons"));
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.addreason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager addreason <Reason>"));
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.removereason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager removereason <ReasonID>"));	
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.listreasons"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager listreasons"));	
+					}
 					player.sendMessage(new TextComponent(""));
 					
 				} else if(args.length == 1) {
@@ -115,12 +121,18 @@ public class CMDReportManager extends Command {
 				} else {
 					player.sendMessage(new TextComponent(""));
 					player.sendMessage(new TextComponent(Main.getPrefix() + "§8[§cReportManager§8]"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager addreason <Reason>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager removereason <ReasonID>"));
-					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
-							"/reportmanager listreasons"));
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.addreason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager addreason <Reason>"));
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.removereason"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager removereason <ReasonID>"));	
+					}
+					if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.ReportManager.listreasons"))) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.GRAY + 
+								"/reportmanager listreasons"));	
+					}
 					player.sendMessage(new TextComponent(""));
 				}
 				

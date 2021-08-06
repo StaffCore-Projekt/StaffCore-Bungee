@@ -25,8 +25,24 @@ public class TranslationHandler {
 	private HashMap<String, String> custom = new HashMap<>();
 	private ArrayList<String> keys = new ArrayList<>();
 	
+	private HashMap<String, String> availableLanguages = new HashMap<>();
+	
 	public TranslationHandler() {
 		super();
+		
+		availableLanguages.put("de", "Deutsch");
+		availableLanguages.put("us", "English (US)");
+		availableLanguages.put("dk", "Dansk");
+		availableLanguages.put("nl", "Nederlands");
+		availableLanguages.put("ru", "Russian");
+		availableLanguages.put("es", "EspaÃ±ol");
+		availableLanguages.put("fr", "FranÃ§ais");
+		availableLanguages.put("it", "Italiano");
+		availableLanguages.put("cn", "Chinese (Simplified)");
+		availableLanguages.put("cz", "Czech");
+		availableLanguages.put("fi", "Suomalainen");
+		availableLanguages.put("ee", "Eestlane");
+		availableLanguages.put("hr", "Hrvatski");
 	}
 	
 	public void init() {
@@ -59,40 +75,50 @@ public class TranslationHandler {
 				}
 			}
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §aSuccessfully §8cached §7" + fallback.size() + " §aFallback-Translations§8(§7US§8)"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§aSuccessfully Â§8cached Â§7" + fallback.size() + " Â§aFallback-TranslationsÂ§8(Â§7USÂ§8)"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		} catch(NullPointerException e) {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §7Translator is not reachable :("));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cServices might be in maintenance! Please be patient"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§7Translator is not reachable :("));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§cServices might be in maintenance! Please be patient"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		}
 	}
 	
 	public void fetch(String lang) {
-		language.clear();
-		
-		try {
-			JsonObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/all/lang/"+ lang).getAsJsonObject();
+		if(availableLanguages.containsKey(lang)) {
 			
-			for(String key : keys) {
+			language.clear();
+			
+			try {
+				JsonObject translation = readJsonFromUrl("https://www.lacodev.de/services/api/v1/all/lang/"+ lang).getAsJsonObject();
 				
-				try {
-					JsonObject msg = (JsonObject) translation.getAsJsonObject(key);
+				for(String key : keys) {
 					
-					language.put(key, msg.get("translation").getAsString());
-				} catch(NullPointerException e) {
-					
+					try {
+						JsonObject msg = (JsonObject) translation.getAsJsonObject(key);
+						
+						language.put(key, msg.get("translation").getAsString());
+					} catch(NullPointerException e) {
+						
+					}
 				}
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§aSuccessfully Â§8cached Â§7" + language.size() + " Â§aRequest-TranslationsÂ§8(Â§7"+ lang.toUpperCase() +"Â§8)"));
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+			} catch(NullPointerException e) {
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§7Translator is not reachable :("));
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§cServices might be in maintenance! Please be patient"));
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 			}
+			
+		} else {
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cInvalid Countrycode! Possible Translations:"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §aSuccessfully §8cached §7" + language.size() + " §aRequest-Translations§8(§7"+ lang.toUpperCase() +"§8)"));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-		} catch(NullPointerException e) {
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §7Translator is not reachable :("));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cServices might be in maintenance! Please be patient"));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+			for(String key : availableLanguages.keySet()) {
+				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§8- Â§c" + key + "Â§8 | Â§c" + availableLanguages.get(key)));
+			}
 		}
 	}
 	
@@ -114,13 +140,13 @@ public class TranslationHandler {
 			}
 			
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §aSuccessfully §8cached §7" + custom.size() + " §aMessages§8(§7CUSTOM§8)"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§aSuccessfully Â§8cached Â§7" + custom.size() + " Â§aMessagesÂ§8(Â§7CUSTOMÂ§8)"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		} catch (ClassCastException | NullPointerException e) {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §7Translator denied your request!"));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cServices might be in maintenance! Or you entered the wrong API-Key"));
-			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cTry adding messages ;) If you have, please contact our support!"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§7Translator denied your request!"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§cServices might be in maintenance! Or you entered the wrong API-Key"));
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("Â§cSystem Â§8Â» Â§cTry adding messages ;) If you have, please contact our support!"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		}
 		

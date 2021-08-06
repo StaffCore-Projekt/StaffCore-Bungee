@@ -17,7 +17,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class CMDPunishmentHistory extends Command {
 
 	public CMDPunishmentHistory(String name) {
-		super(name);
+		super(name, null, "history");
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class CMDPunishmentHistory extends Command {
 												String loginLastDate = last_login_format.format(last_login);
 												
 												TextComponent tc = new TextComponent();
-												tc.setText("§8- §c" + punish.getType().toString() + " §8| §e" + punish.getReason() + " §8| §7" + loginLastDate);
+												tc.setText("§8- §c" + punish.getType().toString() + " §8| §7(#"+ punish.getId() +") §e" + punish.getReason() + " §8| §7" + loginLastDate);
 												
 												player.sendMessage(tc);
 												
@@ -112,7 +112,7 @@ public class CMDPunishmentHistory extends Command {
 											String loginLastDate = last_login_format.format(last_login);
 											
 											TextComponent tc = new TextComponent();
-											tc.setText("§8- §c" + punish.getType().toString() + " §8| §e" + punish.getReason() + " §8| §7" + loginLastDate);
+											tc.setText("§8- §c" + punish.getType().toString() + " §8| §7(#"+ punish.getId() +") §e" + punish.getReason() + " §8| §7" + loginLastDate);
 											
 											sender.sendMessage(tc);
 											

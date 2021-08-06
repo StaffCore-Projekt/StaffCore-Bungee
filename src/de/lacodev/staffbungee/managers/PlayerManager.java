@@ -442,7 +442,9 @@ public class PlayerManager {
 			ResultSet rs = Main.getMySQL().query("SELECT * FROM StaffCore_punishmentsdb WHERE UUID = '"+ uuid +"' ORDER BY id DESC LIMIT 10");
 			
 			while(rs.next()) {
-				punishments.add(new Punishment(rs.getInt("id"), PunishmentType.valueOf(rs.getString("TYPE")), rs.getString("REASON"), rs.getString("UUID"), rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER")));
+				punishments.add(new Punishment(rs.getInt("id"), PunishmentType.valueOf(rs.getString("TYPE")), rs.getString("REASON"), rs.getString("UUID"), 
+						rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER"), rs.getBoolean("UNBANNED"), 
+						rs.getLong("UNBAN_TIME"), rs.getString("UNBAN_REASON"), rs.getString("UNBAN_STAFF")));
 			}
 			return punishments;
 			
@@ -459,7 +461,9 @@ public class PlayerManager {
 			ResultSet rs = Main.getMySQL().query("SELECT * FROM StaffCore_punishmentsdb WHERE UUID = '"+ uuid +"' AND TYPE = '"+ type.toString() +"' ORDER BY id DESC LIMIT 10");
 			
 			while(rs.next()) {
-				punishments.add(new Punishment(rs.getInt("id"), type, rs.getString("REASON"), rs.getString("UUID"), rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER")));
+				punishments.add(new Punishment(rs.getInt("id"), type, rs.getString("REASON"), rs.getString("UUID"), 
+						rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER"), rs.getBoolean("UNBANNED"), 
+						rs.getLong("UNBAN_TIME"), rs.getString("UNBAN_REASON"), rs.getString("UNBAN_STAFF")));
 			}
 			return punishments;
 			
@@ -477,7 +481,9 @@ public class PlayerManager {
 			Punishment punishments = null;
 			
 			while(rs.next()) {
-			  punishments = new Punishment(rs.getInt("id"), PunishmentType.valueOf(rs.getString("TYPE")), rs.getString("REASON"), rs.getString("UUID"), rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER"));
+			  punishments = new Punishment(rs.getInt("id"), PunishmentType.valueOf(rs.getString("TYPE")), rs.getString("REASON"), rs.getString("UUID"), 
+					  rs.getString("TEAM_UUID"), rs.getLong("BAN_START"), rs.getLong("BAN_END"), rs.getString("SUB_SERVER"), rs.getBoolean("UNBANNED"), 
+						rs.getLong("UNBAN_TIME"), rs.getString("UNBAN_REASON"), rs.getString("UNBAN_STAFF"));
 			}
 			return punishments;
 			

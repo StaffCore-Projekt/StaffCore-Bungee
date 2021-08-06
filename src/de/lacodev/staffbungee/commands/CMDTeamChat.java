@@ -12,7 +12,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class CMDTeamChat extends Command {
 
 	public CMDTeamChat(String name) {
-		super(name);
+		super(name, null, "tc");
 	}
 
 	@Override

@@ -130,6 +130,17 @@ public class CMDStaffCore extends Command {
 						
 					}
 				}
+			} else {
+				if(player.hasPermission(Main.getPermissionNotice("Permissions.Everything"))) {
+					
+					player.sendMessage(new TextComponent(""));
+					player.sendMessage(new TextComponent(Main.getPrefix() + "§7/staffcore settings <Setting>"));
+					player.sendMessage(new TextComponent(""));
+					for(Settings setting : Settings.values()) {
+						player.sendMessage(new TextComponent(Main.getPrefix() + "§7" + setting.toString()));
+					}
+					player.sendMessage(new TextComponent(""));
+				}
 			}
 		} else {
 			CommandSender player = sender;
@@ -157,6 +168,8 @@ public class CMDStaffCore extends Command {
 						player.sendMessage(new TextComponent(Main.getPrefix() + config.toString()));
 					}
 				}
+			} else if(args.length == 1) {
+				player.sendMessage(new TextComponent(Main.getPrefix() + "§7/staffcore import <MigrationConfig>"));
 			} else {
 				player.sendMessage(new TextComponent(Main.getPrefix() + "§7/staffcore import <MigrationConfig>"));
 			}

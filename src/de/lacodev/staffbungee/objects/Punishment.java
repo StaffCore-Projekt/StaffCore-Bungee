@@ -14,7 +14,14 @@ public class Punishment {
 	long punishment_end;
 	String server;
 	
-	public Punishment(int id, PunishmentType type, String reason, String punished, String punisher, long punishment_start, long punishment_end, String sub_server) {
+	boolean unbanned;
+	long unbantime;
+	String unbanreason;
+	String unbanstaff;
+
+	public Punishment(int id, PunishmentType type, String reason, String punished, String punisher,
+			long punishment_start, long punishment_end, String server, boolean unbanned, long unbantime,
+			String unbanreason, String unbanstaff) {
 		this.id = id;
 		this.type = type;
 		this.reason = reason;
@@ -22,7 +29,11 @@ public class Punishment {
 		this.punisher = punisher;
 		this.punishment_start = punishment_start;
 		this.punishment_end = punishment_end;
-		this.server = sub_server;
+		this.server = server;
+		this.unbanned = unbanned;
+		this.unbantime = unbantime;
+		this.unbanreason = unbanreason;
+		this.unbanstaff = unbanstaff;
 	}
 
 	public PunishmentType getType() {
@@ -85,5 +96,23 @@ public class Punishment {
 		return server;
 	}
 	
-	
+	public boolean isUnbanned() {
+		return unbanned;
+	}
+
+	public long getUnbantime() {
+		return unbantime;
+	}
+
+	public String getUnbanreason() {
+		return unbanreason;
+	}
+
+	public String getUnbanstaff() {
+		if(unbanstaff == "Console") {
+			return "Console";
+		} else {
+			return PlayerManager.getUsernamebyUUID(unbanstaff);
+		}
+	}
 }

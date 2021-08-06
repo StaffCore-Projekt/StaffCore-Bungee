@@ -5,6 +5,7 @@ import java.util.HashMap;
 import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.commands.CMDStaffCore;
 import de.lacodev.staffbungee.enums.ReportType;
+import de.lacodev.staffbungee.enums.Settings;
 import de.lacodev.staffbungee.managers.MuteManager;
 import de.lacodev.staffbungee.managers.ReportManager;
 import de.lacodev.staffbungee.managers.SettingsManager;
@@ -33,12 +34,25 @@ public class ListenerChat implements Listener {
 		if(CMDStaffCore.settings.containsKey(player)) {
 			if(!e.getMessage().matches("cancel")) {
 				
-				SettingsManager.updateValue(CMDStaffCore.settings.get(player), e.getMessage());
-				CMDStaffCore.settings.remove(player);
-				player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §achanged §7the value of the Setting to:"));
-				player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.translateAlternateColorCodes('&', e.getMessage())));
-				
-				e.setCancelled(true);
+				if(CMDStaffCore.settings.get(player).equals(Settings.MOTD_ENABLE) || CMDStaffCore.settings.get(player).equals(Settings.MOTD_FAKEPLAYERS_ENABLE)) {
+					
+					SettingsManager.updateValue(CMDStaffCore.settings.get(player), e.getMessage().toUpperCase());
+					CMDStaffCore.settings.remove(player);
+					player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §achanged §7the value of the Setting to:"));
+					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.translateAlternateColorCodes('&', e.getMessage())));
+					
+					e.setCancelled(true);
+					
+				} else {
+					
+					SettingsManager.updateValue(CMDStaffCore.settings.get(player), e.getMessage());
+					CMDStaffCore.settings.remove(player);
+					player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §achanged §7the value of the Setting to:"));
+					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.translateAlternateColorCodes('&', e.getMessage())));
+					
+					e.setCancelled(true);
+					
+				}
 			} else {
 				player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §ccancelled §7the editing of the Setting"));
 				CMDStaffCore.settings.remove(player);

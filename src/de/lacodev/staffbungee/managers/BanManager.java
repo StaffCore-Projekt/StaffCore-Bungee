@@ -428,7 +428,7 @@ public class BanManager {
 						
 						Main.getMySQL().update("DELETE FROM StaffCore_bansdb WHERE BANNED_UUID = '"+ targetuuid +"'");
 						
-						NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "UNBAN", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), null);
+						NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "UNBAN", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), reason);
 						
 					} else {
 						team.sendMessage(new TextComponent(""));
@@ -454,7 +454,7 @@ public class BanManager {
 						
 						Main.getMySQL().update("DELETE FROM StaffCore_bansdb WHERE BANNED_UUID = '"+ targetuuid +"'");
 						
-						NotificationManager.sendNotify(NotificationSender.CONSOLE_NOTIFY, "UNBAN", PlayerManager.getUsernamebyUUID(targetuuid), null);
+						NotificationManager.sendNotify(NotificationSender.CONSOLE_NOTIFY, "UNBAN", PlayerManager.getUsernamebyUUID(targetuuid), reason);
 						
 					} else {
 						BungeeCord.getInstance().getConsole().sendMessage(new TextComponent(""));
