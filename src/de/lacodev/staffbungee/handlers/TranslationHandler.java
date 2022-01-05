@@ -78,6 +78,7 @@ public class TranslationHandler {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §aSuccessfully §8cached §7" + fallback.size() + " §aFallback-Translations§8(§7US§8)"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 		} catch(NullPointerException e) {
+			e.printStackTrace();
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §7Translator is not reachable :("));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cServices might be in maintenance! Please be patient"));
@@ -164,6 +165,7 @@ public class TranslationHandler {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private JsonElement readJsonFromUrl(String url) {
 		JsonParser parser = new JsonParser();
 		

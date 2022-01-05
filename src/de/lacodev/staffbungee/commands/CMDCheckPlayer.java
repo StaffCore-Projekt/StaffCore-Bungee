@@ -123,6 +123,9 @@ public class CMDCheckPlayer extends Command {
 										}
 									}
 									
+									Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_CHECKED','"+ player.getUniqueId().toString() +"',"
+											+ "'"+ PlayerManager.getUsernamebyUUID(uuid) +"','%player% checked the information of %target%','"+ System.currentTimeMillis() +"','2')");
+									
 								}
 								
 							});

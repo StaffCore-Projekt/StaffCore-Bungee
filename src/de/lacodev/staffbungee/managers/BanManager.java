@@ -176,6 +176,9 @@ public class BanManager {
 											+ ",'"+ System.currentTimeMillis() +"','"+ banEnd +"')");
 								}
 								
+								Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_BANNED','"+ teamuuid +"',"
+										+ "'"+ PlayerManager.getUsernamebyUUID(targetuuid) +"','%player% banned %target% from the network','"+ System.currentTimeMillis() +"','3')");
+								
 								NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "BAN", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), reason);
 								
 							} else {
@@ -322,6 +325,9 @@ public class BanManager {
 									Main.getMySQL().update("INSERT INTO StaffCore_punishmentsdb(TYPE,PUNISH_ID,UUID,TEAM_UUID,REASON,BAN_START,BAN_END) VALUES ('BAN','"+ banid +"','"+ targetuuid +"','"+ teamuuid +"','"+ reason +"'"
 											+ ",'"+ System.currentTimeMillis() +"','"+ banEnd +"')");
 								}
+								
+								Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_BANNED','"+ teamuuid +"',"
+										+ "'"+ PlayerManager.getUsernamebyUUID(targetuuid) +"','%player% banned %target% from the network','"+ System.currentTimeMillis() +"','3')");
 
 							} else {
 								player.sendMessage(new TextComponent(""));

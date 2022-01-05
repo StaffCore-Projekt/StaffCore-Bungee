@@ -69,6 +69,9 @@ public class CMDPunishmentHistory extends Command {
 								
 							});
 							
+							Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PUNISHMENT_HISTORY_VIEWED','"+ player.getUniqueId().toString() +"',"
+									+ "'"+ uuid +"','%player% viewed the Punishment-History of %target%','"+ System.currentTimeMillis() +"','1')");
+							
 						} else {				
 							player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Ban-System.Cannot-find-player")));
 						}

@@ -172,6 +172,9 @@ public class MuteManager {
 											+ ",'"+ System.currentTimeMillis() +"','"+ muteEnd +"')");
 								}
 								
+								Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_MUTED','"+ teamuuid +"',"
+										+ "'"+ PlayerManager.getUsernamebyUUID(targetuuid) +"','%player% muted %target%','"+ System.currentTimeMillis() +"','3')");
+								
 								NotificationManager.sendNotify(NotificationSender.PLAYER_NOTIFY, "MUTE", PlayerManager.getUsernamebyUUID(teamuuid), PlayerManager.getUsernamebyUUID(targetuuid), reason);
 								
 							} else {

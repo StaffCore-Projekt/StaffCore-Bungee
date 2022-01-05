@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
 import de.lacodev.staffbungee.commands.CMDBan;
 import de.lacodev.staffbungee.commands.CMDBanIp;
 import de.lacodev.staffbungee.commands.CMDBanManager;
@@ -15,6 +13,7 @@ import de.lacodev.staffbungee.commands.CMDChatLog;
 import de.lacodev.staffbungee.commands.CMDCheckAlts;
 import de.lacodev.staffbungee.commands.CMDCheckPlayer;
 import de.lacodev.staffbungee.commands.CMDCheckPunishment;
+import de.lacodev.staffbungee.commands.CMDCommandList;
 import de.lacodev.staffbungee.commands.CMDKick;
 import de.lacodev.staffbungee.commands.CMDLabyMod;
 import de.lacodev.staffbungee.commands.CMDMaintenance;
@@ -36,8 +35,10 @@ import de.lacodev.staffbungee.commands.CMDWarns;
 import de.lacodev.staffbungee.commands.CMDWatchList;
 import de.lacodev.staffbungee.enums.MigrationConfig;
 import de.lacodev.staffbungee.handlers.AntiMCLeaksHandler;
+import de.lacodev.staffbungee.handlers.ExtensionsHandler;
 import de.lacodev.staffbungee.handlers.MaintenanceHandler;
 import de.lacodev.staffbungee.handlers.SessionsHandler;
+import de.lacodev.staffbungee.handlers.StaffCoreInformationHandler;
 import de.lacodev.staffbungee.handlers.TeamChatHandler;
 import de.lacodev.staffbungee.handlers.TranslationHandler;
 import de.lacodev.staffbungee.listeners.ListenerChat;
@@ -47,6 +48,7 @@ import de.lacodev.staffbungee.listeners.ListenerWatchListActions;
 import de.lacodev.staffbungee.managers.PlayerManager;
 import de.lacodev.staffbungee.managers.SettingsManager;
 import de.lacodev.staffbungee.mysql.MySQLConnect;
+import de.lacodev.staffbungee.utils.StaffCoreUISync;
 import de.lacodev.staffbungee.utils.UpdateChecker;
 import de.lacodev.staffbungee.utils.VersionDetector;
 import net.md_5.bungee.BungeeCord;
@@ -74,6 +76,9 @@ public class Main extends Plugin {
 	public static SessionsHandler sessions;
 	public static MaintenanceHandler maintenance;
 	public static TeamChatHandler teamchat;
+	public static ExtensionsHandler extensions;
+	
+	public static StaffCoreUISync sync;
 	
 	public void onEnable() {
 		
@@ -84,6 +89,7 @@ public class Main extends Plugin {
 		sessions = new SessionsHandler();
 		maintenance = new MaintenanceHandler();
 		teamchat = new TeamChatHandler();
+		extensions = new ExtensionsHandler();
 		
 		loadConfigs();
 		applyPrefix();
@@ -102,7 +108,21 @@ public class Main extends Plugin {
 			} catch (SQLException e) {
 				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §8Settings §cfailed §8to load!"));
 			}
-			startWebMcSync();
+			
+			sync = new StaffCoreUISync();
+			
+//			if(!extensions.isHookSetup()) {
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §8Extensionshook is §cunavailable§8!"));
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §cMake sure the Hook is setup correctly on your Spigot Servers"));
+//			} else {
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §8Extensionshook is §aavailable§8!"));
+//				Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §8Currently active "+ extensions.activeCount() +"§8!"));
+//			}
+			
+			StaffCoreInformationHandler.saveInfo();
+			
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» Environment: §7" + BungeeCord.getInstance().getVersion()));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» StaffCore: §7v" + this.getDescription().getVersion() + getPluginUpdate()));
@@ -167,36 +187,14 @@ public class Main extends Plugin {
 		}
 		
 	}
-	
-	private void startWebMcSync() {
-		getProxy().getScheduler().schedule(this, new Runnable() {
-
-			@Override
-			public void run() {
-				SettingsManager.values.clear();
-			}
-			
-		}, 10, 1440, TimeUnit.SECONDS);
-	}
 
 	private void startAntiMcLeaksServices() {
 		if(getConfig().getBoolean("MCLeaks-Blocker.Enable")) {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8» §8Activating MCLeaks-Blocker..."));
 			
-			if(getConfig().getBoolean("MCLeaks-Blocker.Cache-Updater.Enable")) {
-				getAntiMCLeaksHandler().cacheAccounts();
-				getProxy().getScheduler().schedule(this, new Runnable() {
-
-					@Override
-					public void run() {
-						getAntiMCLeaksHandler().cacheAccounts();
-					}
-					
-				}, getConfig().getInt("MCLeaks-Blocker.Cache-Updater.Period-In-Minutes"), 1440, TimeUnit.MINUTES);
-			} else {
-				getAntiMCLeaksHandler().cacheAccounts();
-			}
+			getAntiMCLeaksHandler().cacheAccounts();
+			
 		}
 	}
 
@@ -216,6 +214,10 @@ public class Main extends Plugin {
 		    
 		    mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD);
 		    
+		    // StaffCore Activity Tracking
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_activitydb(id int(11) NOT NULL AUTO_INCREMENT, type varchar(255) NOT NULL, uuid varchar(36) NOT NULL, "
+		    		+ "target varchar(255) NOT NULL, message varchar(500) NOT NULL, reg_date mediumtext NOT NULL, priority int(6) NOT NULL, UNIQUE KEY id (id))");
+		    
 		    // Basic Playerdata and Geolocationtracking
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_playerdb(id INT(6) AUTO_INCREMENT UNIQUE, UUID VARCHAR(255), PLAYERNAME VARCHAR(255), "
 		    		+ "BANS INT(6), MUTES INT(6), REPORTS INT(6), WARNS INT(6), LAST_KNOWN_IP VARCHAR(255), FIRST_LOGIN LONG, LAST_LOGIN LONG, PROTECTED INT(6), "
@@ -223,14 +225,14 @@ public class Main extends Plugin {
 		    
 		    // SessionsLog, Monitoring and Onlinetime Calculation
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_sessionsdb(id INT(6) AUTO_INCREMENT UNIQUE, SESSION_ID VARCHAR(255), UUID VARCHAR(255), SESSION_START LONG, "
-		    		+ "SESSION_END LONG, IP_ADDRESS VARCHAR(255), MC_VERSION VARCHAR(255), VIRTUAL_HOST VARCHAR(255), FINISHED BOOLEAN)");
+		    		+ "SESSION_END LONG, IP_ADDRESS VARCHAR(255), MC_VERSION VARCHAR(255), VIRTUAL_HOST VARCHAR(255), CLIENT VARCHAR(255), FINISHED BOOLEAN)");
 		    
 		    // ChatLog and Chat Monitoring
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_messages(id INT(6) AUTO_INCREMENT UNIQUE, SENDER_UUID VARCHAR(255), "
 		    		+ "MESSAGE VARCHAR(256), reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
 		    
 		    // General Settings and Maintenance System
-		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_settings(id INT(6) AUTO_INCREMENT UNIQUE, SETTING VARCHAR(255), VALUE VARCHAR(500))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_settings(id INT(6) AUTO_INCREMENT UNIQUE, SETTING VARCHAR(255), VALUE VARCHAR(500), EXPECTED_INPUT VARCHAR(255))");
 		    
 		    // PunishmentSystem Reason Management
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_reasonsdb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255), NAME VARCHAR(500), BAN_LENGTH LONG, ADMIN_BAN BOOLEAN)");
@@ -267,6 +269,26 @@ public class Main extends Plugin {
 		    // Blacklist System
 		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_blacklistdb(id INT(6) AUTO_INCREMENT UNIQUE, USERNAME VARCHAR(255), ADDED_AT LONG, ADDED_BY VARCHAR(255))");
 		    
+		    // General Information about StaffCore-Bungee display in WebUI
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_infodb(id INT(6) AUTO_INCREMENT UNIQUE, TYPE VARCHAR(255), VALUE TEXT)");
+		    
+		    // Commandlist (Not able to execute those when muted)
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCore_commandlistdb(id INT(6) AUTO_INCREMENT UNIQUE, COMMAND VARCHAR(255))");
+		    
+		    // StaffCoreUI Tables
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_Accounts(account_id int(11) NOT NULL AUTO_INCREMENT, username varchar(16) NOT NULL, password varchar(255) NOT NULL, "
+		    		+ "groupid int(6) NOT NULL, uuid varchar(36) DEFAULT NULL, last_login mediumtext NOT NULL, UNIQUE KEY account_id (account_id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_Groups(group_id int(11) NOT NULL AUTO_INCREMENT, group_name varchar(255) NOT NULL, group_badge varchar(500) NOT NULL, "
+		    		+ "group_priority int(6) NOT NULL, UNIQUE KEY group_id (group_id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_Permissions(id int(11) NOT NULL AUTO_INCREMENT, group_id int(6) NOT NULL, permission_id int(6) NOT NULL, UNIQUE KEY id (id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_PublicAccess(id int(11) NOT NULL AUTO_INCREMENT, type varchar(255) NOT NULL, parameter varchar(255) NOT NULL, "
+		    		+ "accessable tinyint(1) NOT NULL DEFAULT 0, PRIMARY KEY (id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_Sync(id int(11) NOT NULL AUTO_INCREMENT, TYPE varchar(255) NOT NULL, PROCESS text NOT NULL, PRIMARY KEY (id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_Sync_OnJoin(id int(11) NOT NULL AUTO_INCREMENT, USERNAME varchar(16) NOT NULL, TYPE varchar(255) NOT NULL, "
+		    		+ "PROCESS text NOT NULL, PRIMARY KEY (id))");
+		    mysql.update("CREATE TABLE IF NOT EXISTS StaffCoreUI_UserSettings(id int(11) NOT NULL AUTO_INCREMENT, account_id int(11) NOT NULL, lang varchar(50) NOT NULL DEFAULT 'en_US', "
+		    		+ "time_format varchar(255) NOT NULL DEFAULT 'h:ia - Y.m.d', UNIQUE KEY id (id))");
+		    
 		    mysql.updateTables("ALTER TABLE StaffCore_punishmentsdb ADD SUB_SERVER VARCHAR(255) NOT NULL DEFAULT 'Offline' AFTER BAN_END");
 		    mysql.updateTables("ALTER TABLE StaffCore_punishmentsdb ADD PUNISH_ID VARCHAR(35) AFTER TYPE");
 		    mysql.updateTables("ALTER TABLE StaffCore_punishmentsdb ADD UNBANNED BOOLEAN AFTER SUB_SERVER");
@@ -276,8 +298,10 @@ public class Main extends Plugin {
 		    mysql.updateTables("ALTER TABLE StaffCore_bansdb ADD BAN_ID VARCHAR(35) AFTER id");
 		    mysql.updateTables("ALTER TABLE StaffCore_mutesdb ADD MUTE_ID VARCHAR(35) AFTER id");
 		    mysql.updateTables("ALTER TABLE StaffCore_sessionsdb ADD VIRTUAL_HOST VARCHAR(255) AFTER MC_VERSION");
+		    mysql.updateTables("ALTER TABLE StaffCore_sessionsdb ADD CLIENT VARCHAR(255) AFTER VIRTUAL_HOST");
 		    mysql.updateTables("ALTER TABLE StaffCore_reasonsdb ADD ADMIN_BAN BOOLEAN AFTER BAN_LENGTH");
 		    mysql.updateTables("ALTER TABLE StaffCore_warnsdb ADD SUB_SERVER VARCHAR(255) NOT NULL DEFAULT 'Offline' AFTER WARNED_AT");
+		    mysql.updateTables("ALTER TABLE StaffCore_settings ADD EXPECTED_INPUT VARCHAR(255) NOT NULL DEFAULT 'TEXT' AFTER VALUE");
 		    
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent("§cSystem §8(§7MySQL§8) §8- §aSuccessfully §7created the database §atables"));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(""));
@@ -362,6 +386,7 @@ public class Main extends Plugin {
 				configcfg.set("Permissions.Punishment.Check", "staffcore.punishment.check");
 				configcfg.set("Permissions.Blacklist.Change", "staffcore.blacklist.change");
 				configcfg.set("Permissions.StaffRollback.Use", "staffcore.staffrollback.use");
+				configcfg.set("Permissions.CommandList.Use", "staffcore.commandlist.use");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, permission);
 				
@@ -381,27 +406,27 @@ public class Main extends Plugin {
 	    		Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(discord);
 	    		
 				configcfg.set("Discord-Integration.Events.Playerdata-Request.Enable", false);
-				configcfg.set("Discord-Integration.Events.Playerdata-Request.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Playerdata-Request.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Ban.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Ban.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Ban.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Mute.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Mute.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Mute.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Kick.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Kick.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Kick.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Warn.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Warn.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Warn.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Unban.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Unban.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Unban.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-Unmute.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-Unmute.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-Unmute.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Player-Report.Enable", false);
-				configcfg.set("Discord-Integration.Events.Player-Report.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Player-Report.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Auto-Report.Enable", false);
-				configcfg.set("Discord-Integration.Events.Auto-Report.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Auto-Report.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.Network-IPBan.Enable", false);
-				configcfg.set("Discord-Integration.Events.Network-IPBan.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.Network-IPBan.WebHook-URL", "Your Discord-WebHook URL");
 				configcfg.set("Discord-Integration.Events.WatchList-Alerts.Enable", false);
-				configcfg.set("Discord-Integration.Events.WatchList-Alerts.WebHook-URL", "{Your Discord-WebHook URL}");
+				configcfg.set("Discord-Integration.Events.WatchList-Alerts.WebHook-URL", "Your Discord-WebHook URL");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, discord);
 	    		
@@ -597,6 +622,7 @@ public class Main extends Plugin {
 		getProxy().getPluginManager().registerCommand(this, new CMDCheckPunishment("checkpunishment"));
 		getProxy().getPluginManager().registerCommand(this, new CMDBlackList("blacklist"));
 		getProxy().getPluginManager().registerCommand(this, new CMDStaffRollback("staffrollback"));
+		getProxy().getPluginManager().registerCommand(this, new CMDCommandList("commandlist"));
 	}
 
 	private void registerEvents() {

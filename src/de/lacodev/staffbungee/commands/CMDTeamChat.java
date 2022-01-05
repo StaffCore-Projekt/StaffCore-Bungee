@@ -30,9 +30,15 @@ public class CMDTeamChat extends Command {
 						
 						Main.getTeamChat().login(player);
 						
+						Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('TEAMCHAT_JOINED','"+ player.getUniqueId().toString() +"',"
+								+ "'Teamchat','%player% joined the %target%','"+ System.currentTimeMillis() +"','1')");
+						
 					} else if(args[0].equalsIgnoreCase("logout")) {
 						
 						Main.getTeamChat().logout(player);
+						
+						Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('TEAMCHAT_LEFT','"+ player.getUniqueId().toString() +"',"
+								+ "'Teamchat','%player% left the %target%','"+ System.currentTimeMillis() +"','1')");
 						
 					} else if(args[0].equalsIgnoreCase("ghostlogin")) {
 						

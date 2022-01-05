@@ -47,6 +47,9 @@ public class CMDKick extends Command {
 		            	Main.getMySQL().update("INSERT INTO StaffCore_punishmentsdb(TYPE,UUID,TEAM_UUID,REASON,BAN_START,SUB_SERVER) VALUES "
 		            			+ "('KICK','"+ target.getUniqueId().toString() +"','"+ player.getUniqueId().toString() +"','"+ StringGenerator.getMySQLFriendly(reason) +"','"+ System.currentTimeMillis() +"','"+ target.getServer().getInfo().getName() +"')");
 		            	
+		            	Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_KICKED','"+ player.getUniqueId().toString() +"',"
+								+ "'"+ target.getUniqueId().toString() +"','%player% kicked the player %target%','"+ System.currentTimeMillis() +"','2')");
+		            	
 		            	NotificationManager.sendKickNotify(target.getUniqueId().toString(), player.getUniqueId().toString(), reason);
 		            	
 		            	

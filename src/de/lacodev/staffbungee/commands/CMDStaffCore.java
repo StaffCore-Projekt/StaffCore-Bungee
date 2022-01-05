@@ -7,6 +7,8 @@ import de.lacodev.staffbungee.enums.MigrationConfig;
 import de.lacodev.staffbungee.enums.Settings;
 import de.lacodev.staffbungee.handlers.MigrationHandler;
 import de.lacodev.staffbungee.managers.SettingsManager;
+import de.lacodev.staffbungee.managers.StaffCoreUIManager;
+import de.lacodev.staffbungee.objects.SettingsValue;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
@@ -89,16 +91,22 @@ public class CMDStaffCore extends Command {
 					
 					if(SettingsManager.getValue(Settings.ADVERTISMENT_ENABLE).matches("FALSE")) {
 						
-						SettingsManager.updateValue(Settings.ADVERTISMENT_ENABLE, "TRUE");
+						SettingsManager.updateValue(Settings.ADVERTISMENT_ENABLE, new SettingsValue("TRUE"));
 						player.sendMessage(new TextComponent(Main.getPrefix() + "§7Advertisments got §aactivated§7! Thank you!"));
 						
 					} else {
 						
-						SettingsManager.updateValue(Settings.ADVERTISMENT_ENABLE, "FALSE");
+						SettingsManager.updateValue(Settings.ADVERTISMENT_ENABLE, new SettingsValue("FALSE"));
 						player.sendMessage(new TextComponent(Main.getPrefix() + "§7Advertisments got §cdeactivated§7! Enjoy!"));
 						
 					}
 					
+				} else if(args[0].equalsIgnoreCase("extensions")) {
+					//new ChannelManager().sendInventory(StaffCoreChannels.OPEN_INVENTORY.toString(), player, "EXTENSION_HANDLER_MAINGUI");
+				} else if(args[0].equalsIgnoreCase("verify")) {
+					if(!StaffCoreUIManager.isVerified(player.getUniqueId().toString())) {
+						StaffCoreUIManager.verify(player);
+					}
 				}
 			} else if(args.length == 2) {
 				if(args[0].equalsIgnoreCase("settings")) {
@@ -113,6 +121,7 @@ public class CMDStaffCore extends Command {
 								settings.put(player, setting);
 								player.sendMessage(new TextComponent(""));
 								player.sendMessage(new TextComponent(Main.getPrefix() + "§7You are now editing the Setting: §c" + setting.toString()));
+								player.sendMessage(new TextComponent(Main.getPrefix() + "§7Default: §c" + setting.getStandard()));
 								player.sendMessage(new TextComponent(Main.getPrefix() + "§7Your Chat is disabled! Until you type in §ccancel"));
 								player.sendMessage(new TextComponent(""));
 								

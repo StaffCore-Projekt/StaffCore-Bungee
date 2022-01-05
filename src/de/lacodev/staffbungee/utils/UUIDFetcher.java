@@ -14,7 +14,8 @@ import com.google.gson.JsonParser;
 public class UUIDFetcher {
 	  private static HashMap<String, String> uuidCache = new HashMap<>();
 	  
-	  public static String getUUID(String username)
+	  @SuppressWarnings("deprecation")
+	public static String getUUID(String username)
 	  {
 	    if (uuidCache.containsKey(username)) {
 	      return (String)uuidCache.get(username);

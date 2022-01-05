@@ -6,16 +6,17 @@ import java.util.HashMap;
 
 import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.enums.Settings;
+import de.lacodev.staffbungee.objects.SettingsValue;
 
 public class SettingsManager {
 	
-	public static HashMap<Settings, String> values = new HashMap<>();
+	public static HashMap<Settings, SettingsValue> values = new HashMap<>();
 
 	public static void generateDefaultSettings() throws SQLException {
 		
 		for(Settings setting : Settings.values()) {
 			if(!existsSetting(setting)) {
-				Main.getMySQL().update("INSERT INTO StaffCore_settings(SETTING,VALUE) VALUES ('"+ setting.toString() +"','"+ setting.getStandard() +"')");
+				Main.getMySQL().update("INSERT INTO StaffCore_settings(SETTING,VALUE,EXPECTED_INPUT) VALUES ('"+ setting.toString() +"','"+ setting.getStandard() +"','"+ setting.getExpectedInput() +"')");
 			}
 		}
 		
@@ -38,7 +39,13 @@ public class SettingsManager {
 		
 		if(Main.getMySQL().isConnected()) {
 			if(values.containsKey(setting)) {
-				return values.get(setting);
+				SettingsValue value = values.get(setting);
+				if(value.getExpires() > System.currentTimeMillis()) {
+					return value.getValue();
+				} else {
+					values.remove(setting);
+					return value.getValue();
+				}
 			} else {
 				try {
 					if(existsSetting(setting)) {
@@ -46,7 +53,7 @@ public class SettingsManager {
 						
 						try {
 							if(rs.next()) {
-								values.put(setting, rs.getString("VALUE"));
+								values.put(setting, new SettingsValue(rs.getString("VALUE")));
 								return rs.getString("VALUE");
 							}
 						} catch (SQLException e) {
@@ -62,7 +69,7 @@ public class SettingsManager {
 		
 	}
 	
-	public static void updateValue(Settings setting, String value) {
+	public static void updateValue(Settings setting, SettingsValue value) {
 		
 		if(Main.getMySQL().isConnected()) {
 			if(values.containsKey(setting)) {
@@ -70,12 +77,12 @@ public class SettingsManager {
 				values.remove(setting);
 				values.put(setting, value);
 				
-				Main.getMySQL().update("UPDATE StaffCore_settings SET VALUE = '"+ value +"' WHERE SETTING = '"+ setting.toString() +"'");
+				Main.getMySQL().update("UPDATE StaffCore_settings SET VALUE = '"+ value.getValue() +"' WHERE SETTING = '"+ setting.toString() +"'");
 				
 			} else {
 				values.put(setting, value);
 				
-				Main.getMySQL().update("UPDATE StaffCore_settings SET VALUE = '"+ value +"' WHERE SETTING = '"+ setting.toString() +"'");
+				Main.getMySQL().update("UPDATE StaffCore_settings SET VALUE = '"+ value.getValue() +"' WHERE SETTING = '"+ setting.toString() +"'");
 			}
 		}
 		

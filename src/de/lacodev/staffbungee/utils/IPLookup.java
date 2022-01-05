@@ -26,7 +26,7 @@ public class IPLookup {
 	public static String getCountry(String ip) {
 		try {
 			if(iplog.get(ip).get("status").getAsString().matches("success")) {
-				return iplog.get(ip).get("country").getAsString();
+				return iplog.get(ip).get("countryCode").getAsString();
 			} else {
 				return "Request failed";
 			}
@@ -62,6 +62,7 @@ public class IPLookup {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static JsonElement readJsonFromUrl(String url) {
 		JsonParser parser = new JsonParser();
 		

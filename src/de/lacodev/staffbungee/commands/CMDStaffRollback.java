@@ -43,6 +43,9 @@ public class CMDStaffRollback extends Command {
 								Main.getMySQL().update("DELETE FROM StaffCore_warnsdb WHERE TEAM_UUID = '"+ uuid +"'");
 								Main.getMySQL().update("DELETE FROM StaffCore_watchlistdb WHERE TEAM_UUID = '"+ uuid +"'");
 								
+								Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('STAFF_ROLLEDBACK','"+ player.getUniqueId().toString() +"',"
+										+ "'"+ PlayerManager.getUsernamebyUUID(uuid) +"','%player% rolled back all actions performed by %target%','"+ System.currentTimeMillis() +"','3')");
+								
 								player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.System.Staff-Rollback.Success").replace("%staff%", args[0])));
 								
 							}

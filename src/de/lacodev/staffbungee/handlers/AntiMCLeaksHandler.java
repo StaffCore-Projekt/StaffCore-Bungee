@@ -22,6 +22,7 @@ public class AntiMCLeaksHandler {
 	}
 	
 	private ArrayList<String> cache = new ArrayList<>();
+	private long nextRefresh = System.currentTimeMillis() + (1000 * 60 * 10);
 	
 	public void cacheAccounts() {
 		
@@ -52,6 +53,12 @@ public class AntiMCLeaksHandler {
 	}
 	
 	public boolean isAccountCached(String uuid) {
+		if(Main.getInstance().getConfig().getBoolean("MCLeaks-Blocker.Cache-Updater.Enable")) {
+			if(System.currentTimeMillis() >= nextRefresh) {
+				cacheAccounts();
+				nextRefresh = System.currentTimeMillis() + (1000 * 60 * Main.getInstance().getConfig().getInt("MCLeaks-Blocker.Cache-Updater.Period-In-Minutes"));
+			}
+		}
 		return cache.contains(uuid);
 	}
 	
@@ -59,6 +66,7 @@ public class AntiMCLeaksHandler {
 		return cache;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private JsonElement readJsonFromUrl(String url) {
 		JsonParser parser = new JsonParser();
 		

@@ -6,9 +6,11 @@ import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.commands.CMDStaffCore;
 import de.lacodev.staffbungee.enums.ReportType;
 import de.lacodev.staffbungee.enums.Settings;
+import de.lacodev.staffbungee.managers.CommandListManager;
 import de.lacodev.staffbungee.managers.MuteManager;
 import de.lacodev.staffbungee.managers.ReportManager;
 import de.lacodev.staffbungee.managers.SettingsManager;
+import de.lacodev.staffbungee.objects.SettingsValue;
 import de.lacodev.staffbungee.utils.ChatDetector;
 import de.lacodev.staffbungee.utils.StringGenerator;
 import net.md_5.bungee.api.ChatColor;
@@ -34,9 +36,9 @@ public class ListenerChat implements Listener {
 		if(CMDStaffCore.settings.containsKey(player)) {
 			if(!e.getMessage().matches("cancel")) {
 				
-				if(CMDStaffCore.settings.get(player).equals(Settings.MOTD_ENABLE) || CMDStaffCore.settings.get(player).equals(Settings.MOTD_FAKEPLAYERS_ENABLE)) {
+				if(CMDStaffCore.settings.get(player).equals(Settings.MOTD_ENABLE) || CMDStaffCore.settings.get(player).equals(Settings.MOTD_FAKEPLAYERS_ENABLE)  || CMDStaffCore.settings.get(player).equals(Settings.ADVERTISMENT_ENABLE)) {
 					
-					SettingsManager.updateValue(CMDStaffCore.settings.get(player), e.getMessage().toUpperCase());
+					SettingsManager.updateValue(CMDStaffCore.settings.get(player), new SettingsValue(e.getMessage().toUpperCase()));
 					CMDStaffCore.settings.remove(player);
 					player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §achanged §7the value of the Setting to:"));
 					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.translateAlternateColorCodes('&', e.getMessage())));
@@ -45,7 +47,7 @@ public class ListenerChat implements Listener {
 					
 				} else {
 					
-					SettingsManager.updateValue(CMDStaffCore.settings.get(player), e.getMessage());
+					SettingsManager.updateValue(CMDStaffCore.settings.get(player), new SettingsValue(e.getMessage()));
 					CMDStaffCore.settings.remove(player);
 					player.sendMessage(new TextComponent(Main.getPrefix() + "§7You §achanged §7the value of the Setting to:"));
 					player.sendMessage(new TextComponent(Main.getPrefix() + ChatColor.translateAlternateColorCodes('&', e.getMessage())));
@@ -165,6 +167,24 @@ public class ListenerChat implements Listener {
 					
 				}
 				
+			} else {
+				String command = e.getMessage().replace("/", "").split(" ")[0];
+				
+				if(CommandListManager.isListed(command)) {
+
+					if(MuteManager.getRawEnd(uuid) != -1) {
+						
+						player.sendMessage(new TextComponent(Main.getMSG("Messages.Layouts.Mute").replace("%reason%", MuteManager.getReason(uuid)).replace("%remaining%", MuteManager.getFormattedEnd(uuid))));
+						e.setCancelled(true);
+						
+					} else {
+						
+						player.sendMessage(new TextComponent(Main.getMSG("Messages.Layouts.Mute").replace("%reason%", MuteManager.getReason(uuid)).replace("%remaining%", Main.getMSG("Messages.Layouts.Ban.Length-Values.Permanently"))));
+						e.setCancelled(true);
+						
+					}
+					
+				}
 			}
 			
 		}

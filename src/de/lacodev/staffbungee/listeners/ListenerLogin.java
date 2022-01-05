@@ -17,8 +17,10 @@ import de.lacodev.staffbungee.managers.BlackListManager;
 import de.lacodev.staffbungee.managers.PlayerManager;
 import de.lacodev.staffbungee.managers.ReportManager;
 import de.lacodev.staffbungee.managers.SettingsManager;
+import de.lacodev.staffbungee.managers.StaffCoreUIManager;
 import de.lacodev.staffbungee.objects.LabyModInfo;
 import de.lacodev.staffbungee.utils.IPLookup;
+import de.lacodev.staffbungee.utils.StringGenerator;
 import de.lacodev.staffbungee.utils.UUIDFetcher;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -109,8 +111,6 @@ public class ListenerLogin implements Listener {
 			
 			ViolationLevelHandler.reset(player.getUniqueId().toString());
 			
-			Main.getSessionsHandler().startSession(player.getUniqueId().toString());
-			
 			if(IPLookup.isUsingProxy(PlayerManager.getLastKnownIp(player.getUniqueId().toString()))) {
 				for(ProxiedPlayer all : Main.getInstance().getProxy().getPlayers()) {
 					if(all.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || all.hasPermission(Main.getPermissionNotice("Permissions.System.Notify"))) {
@@ -152,11 +152,15 @@ public class ListenerLogin implements Listener {
 			}
 		}
 		
+		Main.getSessionsHandler().startSession(player.getUniqueId().toString());
+		
 		if(player.hasPermission(Main.getPermissionNotice("Permissions.TeamChat.AutoLogin"))) {
 			Main.getTeamChat().login(player);
 		} else if(player.hasPermission(Main.getPermissionNotice("Permissions.TeamChat.Ghost-AutoLogin"))) {
 			Main.getTeamChat().ghostLogin(player);
 		}
+		
+		StaffCoreUIManager.syncOnJoin(player);
 	}
 	
 	@EventHandler
@@ -177,7 +181,8 @@ public class ListenerLogin implements Listener {
 		Main.getTeamChat().logout(player);
 	}
 	
-	  @EventHandler
+	  @SuppressWarnings("deprecation")
+	@EventHandler
 	  public void onPluginMessageReceived(PluginMessageEvent e) {
 	    if (e.getSender() instanceof ProxiedPlayer) {
 	    	ProxiedPlayer p = (ProxiedPlayer) e.getSender();
@@ -190,7 +195,7 @@ public class ListenerLogin implements Listener {
 	    			  brands.put(player, "LabyMod v3");
 	    		  }
 	    	  } else if(e.getTag().contains("LMC")) {
-	    		  String response = translateString(new String(e.getData(), "UTF-8"));
+	    		  String response = StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8"));
 	    		  
 	    		  if(response.startsWith("INFO")) {
 	    			  String stripped_response = response.substring(6);
@@ -221,37 +226,37 @@ public class ListenerLogin implements Listener {
 	    			  brands.put(player, "5zig Mod");
 	    		  }
 	    	  } else if(e.getTag().contains("MC|Brand")) {
-	    		  if(translateString(new String(e.getData(), "UTF-8")).contains("lunarclient")) {
+	    		  if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("lunarclient")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "LunarClient");
 		    		  } else {
 		    			  brands.put(player, "LunarClient");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("vanilla")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("vanilla")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "Vanilla");
 		    		  } else {
 		    			  brands.put(player, "Vanilla");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("PLC18")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("PLC18")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "PvPLounge");
 		    		  } else {
 		    			  brands.put(player, "PvPLounge");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("LiteLoader")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("LiteLoader")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "LiteLoader");
 		    		  } else {
 		    			  brands.put(player, "LiteLoader");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("StaffCore-Client")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("StaffCore-Client")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "StaffCore");
 		    		  } else {
 		    			  brands.put(player, "StaffCore");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "TecknixClient");
 		    		  } else {
@@ -259,31 +264,31 @@ public class ListenerLogin implements Listener {
 		    		  }
 	    		  }
 	    	  } else if(e.getTag().contains("minecraft:brand")) {
-	    		  if(translateString(new String(e.getData(), "UTF-8")).contains("lunarclient")) {
+	    		  if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("lunarclient")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "LunarClient");
 		    		  } else {
 		    			  brands.put(player, "LunarClient");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("vanilla")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("vanilla")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "Vanilla");
 		    		  } else {
 		    			  brands.put(player, "Vanilla");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("PLC18")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("PLC18")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "PvPLounge");
 		    		  } else {
 		    			  brands.put(player, "PvPLounge");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("StaffCore-Client")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("StaffCore-Client")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "StaffCore");
 		    		  } else {
 		    			  brands.put(player, "StaffCore");
 		    		  }
-	    		  } else if(translateString(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
+	    		  } else if(StringGenerator.readChannelMessage(new String(e.getData(), "UTF-8")).contains("Tecknix-Client")) {
 	    			  if(brands.containsKey(player)) {
 		    			  brands.replace(player, "TecknixClient");
 		    		  } else {
@@ -296,22 +301,4 @@ public class ListenerLogin implements Listener {
 	      } 
 	    }
 	  }
-	  
-	  private final String[] incorrectChars = new String[] { 
-	      "\002", "\003", "\004", "\005", "\006", "\007", "\t", "\020", "\021", "\022", 
-	      "\024", "\025", "\026", "\027", "\031", "\017", "\032", "\016", "\013", "\033", 
-	      "\f", "\r", "\b" };
-	  
-	  private String translateString(String string) {
-	    byte b;
-	    int i;
-	    String[] arrayOfString;
-	    for (i = (arrayOfString = this.incorrectChars).length, b = 0; b < i; ) {
-	      String character = arrayOfString[b];
-	      string = string.replace(character, " ");
-	      b++;
-	    } 
-	    return string.replace("\t", " ").replace("  ", " ").replace("\n", " ").trim();
-	  }
-	
 }

@@ -35,12 +35,12 @@ public class MySQLConnect {
 		try {
 			this.con = DriverManager.getConnection("jdbc:mysql://" + HOST + ":"+ PORT +"/" + DATABASE + "?autoReconnect=true&useSSL=false", USER, PASSWORD);
 			
-			updateTables("ALTER TABLE StaffCore_sessionsdb ADD VIRTUAL_HOST VARCHAR(255)");
-			
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§aSuccessfully §7connected to database §a" + DATABASE));
-		} catch (SQLException | NullPointerException e) {
+		} catch (SQLException e) {
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§cFailed to §7connected to database §c" + DATABASE));
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§cErrorCode: §7" + ((SQLException) e).getSQLState() + ":" + ((SQLException) e).getErrorCode()));
+		} catch(NullPointerException e1) {
+			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§cFailed to §7connected to database §c" + DATABASE));
 		}
 		
 	}
@@ -66,11 +66,14 @@ public class MySQLConnect {
 	      Statement st = this.con.createStatement();
 	      st.executeUpdate(qry);
 	      st.close();
-	    } catch (SQLException | NullPointerException e) {
+	    } catch (SQLException e) {
 	      connect();
 	      System.err.println(e);
 	      Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§cErrorCode: §7" + ((SQLException) e).getSQLState() + ":" + ((SQLException) e).getErrorCode()));
-	    }
+	    } catch(NullPointerException e1) {
+	    	connect();
+		    System.err.println(e1);
+		}
 	}
 	
 	public void updateTables(String qry) {
@@ -88,10 +91,24 @@ public class MySQLConnect {
 		try {
 			Statement st = this.con.createStatement();
 			rs = st.executeQuery(qry);
-		} catch (SQLException | NullPointerException e) {
+		} catch (SQLException e) {
 			connect();
 			System.err.println(e);
 			Main.getInstance().getProxy().getConsole().sendMessage(new TextComponent(mysql + "§cErrorCode: §7" + ((SQLException) e).getSQLState() + ":" + ((SQLException) e).getErrorCode()));
+		} catch(NullPointerException e1) {
+	    	connect();
+		    System.err.println(e1);
+		}
+		return rs;
+	}
+	
+	public ResultSet querySilent(String qry) {
+		ResultSet rs = null;
+		try {
+			Statement st = this.con.createStatement();
+			rs = st.executeQuery(qry);
+		} catch (SQLException | NullPointerException e) {
+			
 		}
 		return rs;
 	}

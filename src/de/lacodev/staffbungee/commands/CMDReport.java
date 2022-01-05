@@ -58,6 +58,9 @@ public class CMDReport extends Command {
 										ListenerChat.reportspam.put(player, System.currentTimeMillis() + (1000 * Integer.valueOf(Settings.REPORT_ANTISPAM_COOLDOWN_SECONDS.getStandard())));
 									}
 									
+									Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('REPORT_CREATED','"+ player.getUniqueId().toString() +"',"
+											+ "'"+ target.getUniqueId().toString() +"','%player% reported the player %target%','"+ System.currentTimeMillis() +"','1')");
+									
 									player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.User.Report-Created")));
 									
 								} else {
@@ -73,6 +76,9 @@ public class CMDReport extends Command {
 									if(!(player.hasPermission(Main.getPermissionNotice("Permissions.Everything")) || player.hasPermission(Main.getPermissionNotice("Permissions.Report.Spam.Bypass")))) {
 										ListenerChat.reportspam.put(player, System.currentTimeMillis() + (1000 * Integer.valueOf(Settings.REPORT_ANTISPAM_COOLDOWN_SECONDS.getStandard())));
 									}
+									
+									Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('REPORT_CREATED','"+ player.getUniqueId().toString() +"',"
+											+ "'"+ target.getUniqueId().toString() +"','%player% reported the player %target%','"+ System.currentTimeMillis() +"','1')");
 									
 									player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Report-System.Notify.User.Report-Created")));
 									

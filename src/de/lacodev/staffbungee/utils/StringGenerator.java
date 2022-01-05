@@ -28,5 +28,23 @@ public class StringGenerator {
     public static String getMySQLFriendly(String message) {  	
     	return message.replace("'", "&#180;");
     }
+    
+	private final static String[] incorrectChars = new String[] { 
+		      "\002", "\003", "\004", "\005", "\006", "\007", "\t", "\020", "\021", "\022", 
+		      "\024", "\025", "\026", "\027", "\031", "\017", "\032", "\016", "\013", "\033", 
+		      "\f", "\r", "\b" };
+		  
+	  public static String readChannelMessage(String string) {
+		    byte b;
+		    int i;
+		    String[] arrayOfString;
+		    for (i = (arrayOfString = incorrectChars).length, b = 0; b < i; ) {
+		      String character = arrayOfString[b];
+		      string = string.replace(character, " ");
+		      b++;
+		    } 
+		    return string.replace("\t", " ").replace("  ", " ").replace("\n", " ").trim();
+		  }
+		
 	
 }

@@ -4,6 +4,7 @@ import de.lacodev.staffbungee.Main;
 import de.lacodev.staffbungee.enums.Settings;
 import de.lacodev.staffbungee.managers.PlayerManager;
 import de.lacodev.staffbungee.managers.SettingsManager;
+import de.lacodev.staffbungee.objects.SettingsValue;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -48,7 +49,7 @@ public class CMDMaintenance extends Command {
 							
 							if(!Main.getMaintenanceHandler().isMaintenance()) {
 								
-								SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, "TRUE");
+								SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, new SettingsValue("TRUE"));
 								
 								for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()) {
 									
@@ -74,7 +75,7 @@ public class CMDMaintenance extends Command {
 							
 							if(Main.getMaintenanceHandler().isMaintenance()) {
 								
-								SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, "FALSE");
+								SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, new SettingsValue("FALSE"));
 								player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Maintenance.Deactivated")));
 								
 								for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()) {
@@ -121,7 +122,7 @@ public class CMDMaintenance extends Command {
 					
 					if(!Main.getMaintenanceHandler().isMaintenance()) {
 						
-						SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, "TRUE");
+						SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, new SettingsValue("TRUE"));
 						sender.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Maintenance.Activated")));
 						
 						for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()) {
@@ -146,7 +147,7 @@ public class CMDMaintenance extends Command {
 					
 					if(Main.getMaintenanceHandler().isMaintenance()) {
 						
-						SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, "FALSE");
+						SettingsManager.updateValue(Settings.MAINTENANCE_ENABLE, new SettingsValue("FALSE"));
 						sender.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Maintenance.Deactivated")));
 						
 						for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()) {

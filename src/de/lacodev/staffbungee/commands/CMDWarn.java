@@ -1,6 +1,7 @@
 package de.lacodev.staffbungee.commands;
 
 import de.lacodev.staffbungee.Main;
+import de.lacodev.staffbungee.managers.PlayerManager;
 import de.lacodev.staffbungee.managers.WarnManager;
 import de.lacodev.staffbungee.utils.StringGenerator;
 import net.md_5.bungee.BungeeCord;
@@ -40,6 +41,10 @@ public class CMDWarn extends Command {
 								}
 								
 								WarnManager.warn(target.getUniqueId().toString(), player.getUniqueId().toString(), StringGenerator.getMySQLFriendly(reason));
+								
+								Main.getMySQL().update("INSERT INTO StaffCore_activitydb(type,uuid,target,message,reg_date,priority) VALUES ('PLAYER_WARNED','"+ player.getUniqueId().toString() +"',"
+										+ "'"+ PlayerManager.getUsernamebyUUID(target.getUniqueId().toString()) +"','%player% warned the player %target%','"+ System.currentTimeMillis() +"','2')");
+								
 								player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Warn-System.Warn.Created")));
 								
 							} else {	

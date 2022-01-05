@@ -35,7 +35,7 @@ public class SessionsHandler {
 	public void stopSession(String uuid) {
 		Session session = sessions.get(uuid);
 		
-		Main.getMySQL().update("UPDATE StaffCore_sessionsdb SET SESSION_END = '"+ System.currentTimeMillis() +"',FINISHED = '1' WHERE SESSION_ID = '"+ session.getUniqueid() +"'");
+		Main.getMySQL().update("UPDATE StaffCore_sessionsdb SET SESSION_END = '"+ System.currentTimeMillis() +"',CLIENT = '"+ PlayerManager.getBrand(BungeeCord.getInstance().getPlayer(UUID.fromString(uuid)).getName()) +"',FINISHED = '1' WHERE SESSION_ID = '"+ session.getUniqueid() +"'");
 		
 		sessions.remove(uuid);
 	}
