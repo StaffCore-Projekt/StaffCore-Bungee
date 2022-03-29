@@ -1,0 +1,4 @@
+name: StaffCore-Bungee
+version: ${version}
+author: LacoDev
+main: de.lacodev.staffbungee.Main
