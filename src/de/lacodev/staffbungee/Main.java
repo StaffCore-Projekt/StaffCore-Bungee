@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+
 import de.lacodev.staffbungee.commands.CMDBan;
 import de.lacodev.staffbungee.commands.CMDBanIp;
 import de.lacodev.staffbungee.commands.CMDBanManager;
@@ -14,6 +15,7 @@ import de.lacodev.staffbungee.commands.CMDCheckAlts;
 import de.lacodev.staffbungee.commands.CMDCheckPlayer;
 import de.lacodev.staffbungee.commands.CMDCheckPunishment;
 import de.lacodev.staffbungee.commands.CMDCommandList;
+import de.lacodev.staffbungee.commands.CMDCommandSpy;
 import de.lacodev.staffbungee.commands.CMDKick;
 import de.lacodev.staffbungee.commands.CMDLabyMod;
 import de.lacodev.staffbungee.commands.CMDMaintenance;
@@ -35,6 +37,7 @@ import de.lacodev.staffbungee.commands.CMDWarns;
 import de.lacodev.staffbungee.commands.CMDWatchList;
 import de.lacodev.staffbungee.enums.MigrationConfig;
 import de.lacodev.staffbungee.handlers.AntiMCLeaksHandler;
+import de.lacodev.staffbungee.handlers.CommandSpyHandler;
 import de.lacodev.staffbungee.handlers.ExtensionsHandler;
 import de.lacodev.staffbungee.handlers.MaintenanceHandler;
 import de.lacodev.staffbungee.handlers.SessionsHandler;
@@ -77,6 +80,7 @@ public class Main extends Plugin {
 	public static MaintenanceHandler maintenance;
 	public static TeamChatHandler teamchat;
 	public static ExtensionsHandler extensions;
+	public static CommandSpyHandler commandspy;
 	
 	public static StaffCoreUISync sync;
 	
@@ -90,6 +94,7 @@ public class Main extends Plugin {
 		maintenance = new MaintenanceHandler();
 		teamchat = new TeamChatHandler();
 		extensions = new ExtensionsHandler();
+		commandspy = new CommandSpyHandler();
 		
 		loadConfigs();
 		applyPrefix();
@@ -387,6 +392,7 @@ public class Main extends Plugin {
 				configcfg.set("Permissions.Blacklist.Change", "staffcore.blacklist.change");
 				configcfg.set("Permissions.StaffRollback.Use", "staffcore.staffrollback.use");
 				configcfg.set("Permissions.CommandList.Use", "staffcore.commandlist.use");
+				configcfg.set("Permissions.CommandSpy.Use", "staffcore.commandspy.use");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, permission);
 				
@@ -520,7 +526,7 @@ public class Main extends Plugin {
 				
 				configcfg.set("General.System-Prefix", "&cSystem &8%double_arrow% ");
 				configcfg.set("General.Custom-Messages.Enable", false);
-				configcfg.set("General.Custom-Messages.Rest-API-Key", "{Your API-Key from the Dashboard}");
+				configcfg.set("General.Custom-Messages.Rest-API-Key", "Your API-Key from the Dashboard");
 				configcfg.set("General.Language", "us");
 				configcfg.set("General.Time-Format", "yyyy.MM.dd, HH:mm");
 				configcfg.set("ViolationLevelSystem.Enable", false);
@@ -623,6 +629,7 @@ public class Main extends Plugin {
 		getProxy().getPluginManager().registerCommand(this, new CMDBlackList("blacklist"));
 		getProxy().getPluginManager().registerCommand(this, new CMDStaffRollback("staffrollback"));
 		getProxy().getPluginManager().registerCommand(this, new CMDCommandList("commandlist"));
+		getProxy().getPluginManager().registerCommand(this, new CMDCommandSpy("commandspy"));
 	}
 
 	private void registerEvents() {
@@ -721,6 +728,10 @@ public class Main extends Plugin {
 
 	public static TeamChatHandler getTeamChat() {
 		return teamchat;
+	}
+	
+	public static CommandSpyHandler getCommandSpy() {
+		return commandspy;
 	}
 
 	public static MySQLConnect getMySQL() {

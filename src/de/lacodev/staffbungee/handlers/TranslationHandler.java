@@ -35,6 +35,7 @@ public class TranslationHandler {
 		availableLanguages.put("dk", "Dansk");
 		availableLanguages.put("nl", "Nederlands");
 		availableLanguages.put("ru", "Russian");
+		availableLanguages.put("pl", "Polskie");
 		availableLanguages.put("es", "Español");
 		availableLanguages.put("fr", "Français");
 		availableLanguages.put("it", "Italiano");
@@ -43,6 +44,7 @@ public class TranslationHandler {
 		availableLanguages.put("fi", "Suomalainen");
 		availableLanguages.put("ee", "Eestlane");
 		availableLanguages.put("hr", "Hrvatski");
+		
 	}
 	
 	public void init() {

@@ -13,6 +13,7 @@ import de.lacodev.staffbungee.managers.SettingsManager;
 import de.lacodev.staffbungee.objects.SettingsValue;
 import de.lacodev.staffbungee.utils.ChatDetector;
 import de.lacodev.staffbungee.utils.StringGenerator;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -95,6 +96,26 @@ public class ListenerChat implements Listener {
 							
 						}
 						
+					}
+					
+				} else {
+					
+					// CommandSpy
+					for(ProxiedPlayer staff : BungeeCord.getInstance().getPlayers()) {
+						if(Main.getCommandSpy().isSpying(staff)) {
+							
+							if(Main.getCommandSpy().getSpyingServer(staff).matches("Global")) {
+								
+								staff.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.CommandSpy.Command-Executed").replace("%target%", player.getName()).replace("%command%", e.getMessage())));
+								staff.sendMessage(new TextComponent(Main.getPrefix() + "§7Server §8» §c" + player.getServer().getInfo().getName()));
+								
+							} else if(Main.getCommandSpy().getSpyingServer(staff).matches(player.getServer().getInfo().getName())) {
+								
+								staff.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.CommandSpy.Command-Executed").replace("%target%", player.getName()).replace("%command%", e.getMessage())));
+								staff.sendMessage(new TextComponent(Main.getPrefix() + "§7Server §8» §c" + player.getServer().getInfo().getName()));
+								
+							}
+						}
 					}
 					
 				}

@@ -66,7 +66,35 @@ public class CMDCommandList extends Command {
 			
 			if(args.length == 2) {
 				
-				
+				if(args[0].equalsIgnoreCase("add")) {
+					
+					String command = args[1];
+					
+					if(!CommandListManager.isListed(command)) {
+						
+						CommandListManager.add(command);
+													
+						player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute.CommandList.Add-Success").replace("%command%", "/" + command)));
+					} else {
+						player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute.CommandList.Already-listed")));
+					}
+					
+				} else if(args[0].equalsIgnoreCase("remove")) {
+					
+					String command = args[1];
+					
+					if(CommandListManager.isListed(command)) {
+						
+						CommandListManager.remove(command);
+													
+						player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute.CommandList.Remove-Success").replace("%command%", "/" + command)));
+					} else {
+						player.sendMessage(new TextComponent(Main.getPrefix() + Main.getMSG("Messages.Mute.CommandList.Not-listed")));
+					}
+					
+				} else {
+					player.sendMessage(new TextComponent(Main.getPrefix() + "§7/commandlist <add/remove> <Command without />"));
+				}
 				
 			} else {
 				player.sendMessage(new TextComponent(Main.getPrefix() + "§7/commandlist <add/remove> <Command without />"));
