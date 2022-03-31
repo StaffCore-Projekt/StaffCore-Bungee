@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.lacodev</groupId>
-    <artifactId>staffbungge</artifactId>
+    <artifactId>staffbungee</artifactId>
     <version>${version}</version>
 
     <properties>
